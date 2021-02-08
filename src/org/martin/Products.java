@@ -2,37 +2,41 @@ package org.martin;
 
 import java.util.EnumSet;
 
-public enum ProductWithPrice {
+public enum Products {
 
-    APPLE(4.0),
-    MILK(9.41),
-    EGGS(5.25),
-    COLA(12.10),
-    COLAZERO(11.15),
-    UNRECOGNIZED(-1.0);
+    APPLE(4.0, new int[] {3,4}),
+    MILK(9.41, null),
+    EGGS(5.25, null),
+    COLA(12.10, null),
+    COLAZERO(11.15, null),
+    UNRECOGNIZED(-1.0, null);
 
     private double price;
+    private int[] offers;
     private static final String BLANK = " ";
 
-    ProductWithPrice(double price) {
+    Products(double price, int[] offers) {
         this.price = price;
+        this.offers = offers;
     }
-
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
+    // ## requirement 5
+    public int[] getSpecialOffers() {
+        return offers;
+    }
 
-    public static ProductWithPrice getInstance(String produceName) {
-        for (ProductWithPrice pwp : EnumSet.allOf(ProductWithPrice.class)) {
-            if (pwp.name().equals(format(produceName))) {
-                return pwp;
+    public static Products getInstance(String produceName) {
+        for (Products products : EnumSet.allOf(Products.class)) {
+            if (products.name().equals(format(produceName))) {
+                return products;
             }
         }
-        return ProductWithPrice.UNRECOGNIZED;
+        return Products.UNRECOGNIZED;
     }
 
     private static String format(String name) {

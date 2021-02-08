@@ -8,7 +8,7 @@ import java.util.Map;
 public class Orders {
 
     private static final String BULK_SEPARATOR = ",";
-    private Map<ProductWithPrice, Integer> orders;
+    private Map<Products, Integer> orders;
 
     public Orders() {
         orders = new HashMap<>();
@@ -27,8 +27,8 @@ public class Orders {
 
     // ## requirement 1
     private void scan(String productName) {
-        ProductWithPrice pwp = ProductWithPrice.getInstance(productName);
-        if (pwp.equals(ProductWithPrice.UNRECOGNIZED)) {
+        Products pwp = Products.getInstance(productName);
+        if (pwp.equals(Products.UNRECOGNIZED)) {
             System.out.println(String.format("Unrecognized product: %s, ignored scanning", productName));
             return;
         }
@@ -37,8 +37,8 @@ public class Orders {
 
     // ## requirement 2
     public void cancel(String productName, Integer quantity) {
-        ProductWithPrice pwp = ProductWithPrice.getInstance(productName);
-        if (pwp.equals(ProductWithPrice.UNRECOGNIZED)) {
+        Products pwp = Products.getInstance(productName);
+        if (pwp.equals(Products.UNRECOGNIZED)) {
             System.out.println(String.format("Unrecognized product: %s, cancel failed", productName));
             return;
         }
@@ -60,8 +60,8 @@ public class Orders {
 
     // ## Requirement 4
     public void discount(String productName, String percentage) {
-        ProductWithPrice pwp = ProductWithPrice.getInstance(productName);
-        if (pwp.equals(ProductWithPrice.UNRECOGNIZED)) {
+        Products pwp = Products.getInstance(productName);
+        if (pwp.equals(Products.UNRECOGNIZED)) {
             System.out.println(String.format("Unrecognized product: %s, discount failed", productName));
             return;
         }
@@ -79,17 +79,35 @@ public class Orders {
         }
     }
 
+    // ## requirement 5 & 6
+    public String getSuggestionIfSpecialOffers(Products products) {
+        int[] offers = products.getSpecialOffers();
+        if (offers != null) {
+            if (offers[0] > orders.get(products)) {
+                return String.format(" (Special offering: buy %s free %sth", offers[0], offers[1]);
+            } else {
+                int boughtNum = orders.get(products);
+                int freeNum = (boughtNum / offers[0]) * (offers[1] - offers[0]);
+                return String.format(" (Special offering: buy %s free %s, and free to give: %s", offers[0], offers[1], freeNum);
+            }
+        }
+        return "";
+    }
+
     // ## requirement 3
     @Override
     public String toString() {
         StringBuilder printer =
                 new StringBuilder("===================== Receipt ======================\n");
-        for (ProductWithPrice pwp : orders.keySet()) {
-            printer.append("Product Name:").append(pwp.name()).append(BULK_SEPARATOR)
-                    .append("Quantity:").append(orders.get(pwp)).append(BULK_SEPARATOR)
-                    .append("Price:").append(pwp.getPrice()).append(BULK_SEPARATOR)
-                    .append("Subtotal:").append(orders.get(pwp) * pwp.getPrice()).append(BULK_SEPARATOR)
+        for (Products products : orders.keySet()) {
+            printer.append("Product Name:").append(products.name()).append(BULK_SEPARATOR)
+                    .append("Quantity:").append(orders.get(products)).append(BULK_SEPARATOR)
+                    .append("Price:").append(products.getPrice()).append(BULK_SEPARATOR)
+                    .append("Subtotal:").append(orders.get(products) * products.getPrice())
                     .append("\n");
+            if (getSuggestionIfSpecialOffers(products).length() > 0) {
+                printer.append(getSuggestionIfSpecialOffers(products)).append("\n");
+            }
         }
         printer.append("Total:").append(CashierCalculator.getTotal(orders)).append("\n");
         printer.append("======================= END ========================\n");

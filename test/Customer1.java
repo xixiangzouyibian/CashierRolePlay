@@ -8,7 +8,7 @@ public class Customer1 {
     @Before
     public void init() {
         orders = new Orders();
-        orders.bulkScan("apple");
+        orders.bulkScan("apple,apple");
         orders.bulkScan("milk,milk,milk");
         orders.bulkScan("cola");
         orders.bulkScan("cola zero");
@@ -44,5 +44,10 @@ public class Customer1 {
         System.out.println(orders.toString());
     }
 
-
+    @Test
+    public void testSpecialOffers() {
+        System.out.println(orders.toString());
+        orders.bulkScan("apple"); // add 1 more
+        System.out.println(orders.toString());
+    }
 }
