@@ -16,9 +16,9 @@ public class Customer1 {
 
     @Test
     public void testCancel1() {
-        System.out.println(orders.toString());
+        System.out.println(orders.toString()); // before
         orders.cancel("milk", 1);
-        System.out.println(orders.toString());
+        System.out.println(orders.toString()); // updated
     }
 
     @Test
