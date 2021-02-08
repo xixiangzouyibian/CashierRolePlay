@@ -60,8 +60,8 @@ public class Orders {
 
     // ## Requirement 4
     public void discount(String productName, String percentage) {
-        Products pwp = Products.getInstance(productName);
-        if (pwp.equals(Products.UNRECOGNIZED)) {
+        Products products = Products.getInstance(productName);
+        if (products.equals(Products.UNRECOGNIZED)) {
             System.out.println(String.format("Unrecognized product: %s, discount failed", productName));
             return;
         }
@@ -73,7 +73,8 @@ public class Orders {
                 System.out.println("Please input the correct percentage number, should be limited in (0%, 100%)");
                 return;
             }
-            pwp.setPrice(pwp.getPrice() * (1-number.doubleValue()));
+            products.setPrice(products.getPrice() * (1-number.doubleValue()));
+            products.setIsDiscount(true);
         } catch (ParseException e) {
             System.out.println("Please typo the correct percentage number");
         }
@@ -102,7 +103,7 @@ public class Orders {
         for (Products products : orders.keySet()) {
             printer.append("Product Name:").append(products.name()).append(BULK_SEPARATOR)
                     .append("Quantity:").append(orders.get(products)).append(BULK_SEPARATOR)
-                    .append("Price:").append(products.getPrice()).append(BULK_SEPARATOR)
+                    .append(products.isDiscount() ? "*Discount Price:": "Price:").append(products.getPrice()).append(BULK_SEPARATOR)
                     .append("Subtotal:").append(orders.get(products) * products.getPrice())
                     .append("\n");
             if (getSuggestionIfSpecialOffers(products).length() > 0) {

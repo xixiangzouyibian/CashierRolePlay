@@ -12,6 +12,7 @@ public class Customer1 {
         orders.bulkScan("milk,milk,milk");
         orders.bulkScan("cola");
         orders.bulkScan("cola zero");
+        orders.bulkScan("eggs");
     }
 
     @Test
