@@ -1,6 +1,8 @@
 package org.martin;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Map;
 
 public class CashierCalculator {

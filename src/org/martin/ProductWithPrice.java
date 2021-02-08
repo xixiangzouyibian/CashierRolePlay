@@ -22,6 +22,10 @@ public enum ProductWithPrice {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public static ProductWithPrice getInstance(String produceName) {
         for (ProductWithPrice pwp : EnumSet.allOf(ProductWithPrice.class)) {
             if (pwp.name().equals(format(produceName))) {
@@ -38,7 +42,7 @@ public enum ProductWithPrice {
         StringBuilder nameBuilder = new StringBuilder();
         for (String nameWord : name.split(BLANK)) {
             if (nameWord.equals(BLANK)) continue;
-            nameBuilder.append(nameWord.trim());
+            nameBuilder.append(nameWord.trim().toUpperCase());
         }
         return nameBuilder.toString();
     }

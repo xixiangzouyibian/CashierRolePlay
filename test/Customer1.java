@@ -1,18 +1,48 @@
-import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Test;
 import org.martin.Orders;
 
 public class Customer1 {
     private Orders orders;
 
-    @BeforeClass
-    private void init() {
+    @Before
+    public void init() {
         orders = new Orders();
         orders.bulkScan("apple");
         orders.bulkScan("milk,milk,milk");
+        orders.bulkScan("cola");
         orders.bulkScan("cola zero");
     }
 
-    private void testScan() {
-
+    @Test
+    public void testCancel1() {
+        System.out.println(orders.toString());
+        orders.cancel("milk", 1);
+        System.out.println(orders.toString());
     }
+
+    @Test
+    public void testCancel2() {
+        System.out.println(orders.toString());
+        orders.cancel("milk", null);
+        System.out.println(orders.toString());
+    }
+
+    @Test
+    public void testDiscount() {
+        System.out.println(orders.toString());
+        orders.discount("apple", "5%");
+        orders.discount("cola", "10%");
+        System.out.println(orders.toString());
+    }
+
+    @Test
+    public void testWrongDiscount() {
+        System.out.println(orders.toString());
+        orders.discount("apple", "120%");
+        orders.discount("cola", "10%");
+        System.out.println(orders.toString());
+    }
+
+
 }
