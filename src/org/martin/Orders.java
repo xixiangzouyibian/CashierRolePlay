@@ -80,16 +80,25 @@ public class Orders {
         }
     }
 
-    // ## requirement 5 & 6
+    // ## requirement 5 & 6 & 7
     public String getSuggestionIfSpecialOffers(Products products) {
-        int[] offers = products.getSpecialOffers();
+        int[][] offers = products.getSpecialOffers();
         if (offers != null) {
-            if (offers[0] > orders.get(products)) {
-                return String.format(" (Special offering: buy %s free %sth", offers[0], offers[1]);
+            Products[] proArray = Products.values();
+            Products buyProd = proArray[offers[0][0]];
+            Products freeProd = proArray[offers[1][0]];
+
+            if (offers[0][1] > orders.get(products)) {
+                return String.format(" (Special offering: buy %s of %s, free %s of %s", offers[0][1], buyProd.name(), offers[1][1], freeProd.name());
             } else {
                 int boughtNum = orders.get(products);
-                int freeNum = (boughtNum / offers[0]) * (offers[1] - offers[0]);
-                return String.format(" (Special offering: buy %s free %s, and free to give: %s", offers[0], offers[1], freeNum);
+                int freeNum;
+                if (offers[0][0] == offers[1][0]) { // same product
+                    freeNum = (boughtNum / offers[0][1]) * (offers[1][1] - offers[0][1]);
+                } else { // different product
+                    freeNum = (boughtNum / offers[0][1]) * offers[1][1];
+                }
+                return String.format(" (Special offering: buy %s of %s, free %s of %s, and free to give: %s", offers[0][1], buyProd.name(), offers[1][1], freeProd.name(), freeNum);
             }
         }
         return "";

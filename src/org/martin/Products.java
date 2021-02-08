@@ -4,19 +4,19 @@ import java.util.EnumSet;
 
 public enum Products {
 
-    APPLE(4.0, new int[] {3,4}, false),
-    MILK(9.41, null, false),
+    APPLE(4.0, new int[][] {new int[] {0, 3}, new int[] {0, 4}}, false), //Using enum instance ordinal mapping with buy and free info
+    MILK(9.41, new int[][] {new int[] {1, 2}, new int[] {2, 1}}, false),
     EGGS(5.25, null, false),
     COLA(12.10, null, false),
     COLAZERO(11.15, null, false),
     UNRECOGNIZED(-1.0, null, false);
 
     private double price;
-    private int[] offers;
+    private int[][] offers; // ## requirement 7
     private boolean isDiscount = false;
     private static final String BLANK = " ";
 
-    Products(double price, int[] offers, boolean isDiscount) {
+    Products(double price, int[][] offers, boolean isDiscount) {
         this.price = price;
         this.offers = offers;
         this.isDiscount = isDiscount;
@@ -35,7 +35,7 @@ public enum Products {
         this.isDiscount = isDiscount;
     }
     // ## requirement 5
-    public int[] getSpecialOffers() {
+    public int[][] getSpecialOffers() {
         return offers;
     }
 
